@@ -6,7 +6,12 @@
   "dependencies": {
     "express": "^4.15.3"
   },
+  "devDependencies": {
+    "concurrently": "3.5.0"
+  },
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "develop": "concurrently --kill-others \"yarn start\" \"cd client && yarn start\"",
+    "postinstall": "cd client; yarn; yarn build"
   }
 }
