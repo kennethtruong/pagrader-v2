@@ -19,7 +19,8 @@
     "jest": true
   },
   "rules": {
-    "prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}]
+    "no-console": 0,
+    "prettier/prettier": ["error", {"singleQuote": true}]
   },
   "settings": {
     "import/resolver": {
