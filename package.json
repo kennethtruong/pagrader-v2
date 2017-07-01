@@ -15,6 +15,7 @@
     "passport-local": "^1.0.0",
     "pretty-error": "^2.1.1",
     "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3",
     "ssh2": "^0.5.5"
   },
   "devDependencies": {
@@ -44,6 +45,6 @@
     "lint": "eslint server client/src",
     "lint:fix": "eslint server client/src --fix",
     "precommit": "lint-staged --verbose",
-    "test": "jest"
+    "test": "jest server;cd client && CI=true yarn test"
   }
 }

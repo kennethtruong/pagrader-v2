@@ -1,0 +1,12 @@
+.App-Content {
+  padding: 50px 0;
+  margin-bottom: -140px;
+  padding-bottom: 140px;
+  min-height: 100vh;
+}
+
+.App-Footer {
+  margin-top: 40px;
+  padding: 40px 0;
+  border-top: 1px solid #eee;
+}
