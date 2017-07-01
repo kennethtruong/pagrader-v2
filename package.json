@@ -7,11 +7,29 @@
     "express": "^4.15.3"
   },
   "devDependencies": {
-    "concurrently": "3.5.0"
+    "babel-eslint": "^7.2.3",
+    "concurrently": "3.5.0",
+    "eslint": "3.19.0",
+    "eslint-config-prettier": "^2.3.0",
+    "eslint-plugin-import": "^2.6.1",
+    "eslint-plugin-prettier": "^2.1.2",
+    "eslint-plugin-react": "^7.1.0",
+    "husky": "^0.14.2",
+    "lint-staged": "^4.0.0",
+    "prettier": "^1.5.2"
+  },
+  "lint-staged": {
+    "*.{js,css,less}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
   },
   "scripts": {
     "start": "node server/index.js",
     "develop": "concurrently --kill-others \"yarn start\" \"cd client && yarn start\"",
-    "postinstall": "cd client; yarn; yarn build"
+    "lint": "eslint server client/src",
+    "lint:fix": "eslint server client/src --fix",
+    "postinstall": "cd client; yarn; yarn build",
+    "precommit": "lint-staged --verbose"
   }
 }
