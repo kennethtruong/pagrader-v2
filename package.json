@@ -59,12 +59,11 @@
   },
   "proxy": "http://localhost:5000",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently --kill-others \"yarn startServer\" \"react-scripts start\"",
     "build": "react-scripts build",
-    "test": "jest server/**/grade.test.js",
+    "test": "jest server/**/*.test.js",
     "eject": "react-scripts eject",
     "startServer": "babel-node server/index.js",
-    "develop": "concurrently --kill-others \"yarn startServer\" \"yarn start\"",
     "lint": "eslint server client/src",
     "lint:fix": "eslint server client/src --fix",
     "precommit": "lint-staged --verbose"
