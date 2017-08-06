@@ -24,8 +24,9 @@ This application helps solve this problem by allowing the professor to log into 
 ## Development Server
 
     yarn start
-    (In separate terminal yarn start in autograder/client)
-    You want to be able to restart the server whenever you make changes
+
+(In separate terminal `yarn start` in autograder/client)
+You want to be able to restart the server whenever you make changes
 
     yarn develop
 

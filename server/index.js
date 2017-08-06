@@ -103,7 +103,6 @@ mongoose.connect(secrets.db, dbErr => {
     });
     io.on('connection', socket => {
       socket.emit('clientId', { id: socket.id });
-      // sshConnections();
       // console.log(`${socket.conn.id} Connected from Socket --------`);
       socket.on('disconnect', () => {
         closeSSHConnection(socket.id);

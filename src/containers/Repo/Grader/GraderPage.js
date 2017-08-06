@@ -75,7 +75,6 @@ class GraderPage extends Component {
     event.preventDefault();
 
     const { students } = this.props;
-    debugger;
     const studentIndex = +this.refs.student.value;
 
     this.setState({

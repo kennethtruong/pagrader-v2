@@ -25,6 +25,7 @@ class AssignmentPage extends Component {
     params: PropTypes.object.isRequired,
     destroy: PropTypes.func.isRequired,
     assignment: PropTypes.object,
+    load: PropTypes.func,
     repo: PropTypes.object,
     runScript: PropTypes.func.isRequired,
     hasChanged: PropTypes.bool,
