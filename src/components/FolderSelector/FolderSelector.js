@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Modal, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import { command as sshCommand } from 'redux/modules/repo';
-import socketId from 'utils/socket';
+import { socket } from 'utils/socket';
 
 class FolderSelector extends Component {
   static propTypes = {
@@ -32,7 +32,7 @@ class FolderSelector extends Component {
    */
   getDirectories(path) {
     this.props.sshCommand({
-      socketId,
+      socketId: socket.id,
       command: `cd ${path}; ls -d */`
     });
   }

@@ -1,12 +1,13 @@
 import io from 'socket.io-client';
 
-let socketId;
-export default socketId;
+export let socket;
 
 export function initSocket() {
-  const socket = io('', { path: '/ws' });
+  return new Promise(resolve => {
+    socket = io('', { path: '/ws' });
 
-  socket.on('clientId', data => {
-    socketId = data.id;
+    socket.on('clientId', () => {
+      resolve();
+    });
   });
 }

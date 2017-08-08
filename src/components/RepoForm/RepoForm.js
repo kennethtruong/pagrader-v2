@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import socketId from 'utils/socket';
+import { socket } from 'utils/socket';
 
 export default class RepoForm extends Component {
   static propTypes = {
@@ -41,7 +41,7 @@ export default class RepoForm extends Component {
 
     this.props.onSubmit({
       ...this.state,
-      socketId
+      socketId: socket.id
     });
   };
 

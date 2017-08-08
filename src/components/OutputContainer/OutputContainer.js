@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { PrismCode } from 'react-prism';
-import socketId from 'utils/socket';
+import { socket } from 'utils/socket';
 import './OutputContainer.css';
 
 export default class OutputContainer extends Component {
@@ -20,14 +20,14 @@ export default class OutputContainer extends Component {
   componentDidMount() {
     const { assignmentId, graderId, fileName } = this.props;
 
-    this.props.load(socketId, assignmentId, graderId, fileName);
+    this.props.load(socket.id, assignmentId, graderId, fileName);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.fileName !== nextProps.fileName) {
       const { assignmentId, graderId, fileName } = nextProps;
 
-      this.props.load(socketId, assignmentId, graderId, fileName);
+      this.props.load(socket.id, assignmentId, graderId, fileName);
     }
   }
 
@@ -48,7 +48,7 @@ export default class OutputContainer extends Component {
         {!error &&
           <div>
             <h4>
-              {fileName.replace(/\.[^\.]+$/, '')}
+              {fileName.replace('/\\.[^\\.]+$/', '')}
             </h4>
             {(fileName.endsWith('txt') &&
               ((language &&

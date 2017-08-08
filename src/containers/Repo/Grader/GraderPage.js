@@ -23,11 +23,11 @@ import {
   load as loadAssignment,
   destroy as destroyAssignment
 } from 'redux/modules/assignment';
-import socketId from 'utils/socket';
+import { socket } from 'utils/socket';
 
 class GraderPage extends Component {
   static propTypes = {
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     students: PropTypes.array,
     repo: PropTypes.object,
     save: PropTypes.func.isRequired,
@@ -93,7 +93,7 @@ class GraderPage extends Component {
   };
 
   handleSave = (grade, comment, errors) => {
-    const { assignmentId, repoId } = this.props.params;
+    const { assignmentId, repoId } = this.props.match.params;
     const { currentStudent, studentIndex } = this.state;
 
     this.props.save({
@@ -120,8 +120,8 @@ class GraderPage extends Component {
   };
 
   handleSubmit = (verification, bbcEmail) => {
-    const { warnings, params, students } = this.props;
-    const { assignmentId, repoId, graderId } = params;
+    const { warnings, match, students } = this.props;
+    const { assignmentId, repoId, graderId } = match.params;
 
     const missingStudents =
       students &&
@@ -134,7 +134,7 @@ class GraderPage extends Component {
 
     if (!missingStudents) {
       this.props.submit({
-        socketId,
+        socketId: socket.id,
         verification,
         bbcEmail,
         assignmentId,
@@ -152,7 +152,7 @@ class GraderPage extends Component {
 
   renderOutput() {
     const { currentStudent, showOutput } = this.state;
-    const { params, repo: { language } } = this.props;
+    const { match: { params }, repo: { language } } = this.props;
     const { assignmentId, graderId } = params;
 
     // Determine if we should show the student's code or output
@@ -267,7 +267,7 @@ class GraderPage extends Component {
   }
 
   render() {
-    const { assignmentId, repoId } = this.props.params;
+    const { assignmentId, repoId } = this.props.match.params;
     const { error, repo } = this.props;
 
     return (

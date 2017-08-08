@@ -15,14 +15,14 @@ import {
   update,
   getGraders
 } from 'redux/modules/assignment';
-import socketId from 'utils/socket';
+import { socket } from 'utils/socket';
 
 class AssignmentPage extends Component {
   static propTypes = {
     error: PropTypes.object,
     loading: PropTypes.bool,
     isLoaded: PropTypes.bool.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     destroy: PropTypes.func.isRequired,
     assignment: PropTypes.object,
     load: PropTypes.func,
@@ -47,13 +47,13 @@ class AssignmentPage extends Component {
       if (this.props.hasChanged) {
         // We just created this assignment so we should run the script
         this.props.runScript({
-          socketId: socketId,
+          socketId: socket.id,
           assignment: this.props.assignment
         });
         this.setState({ previewIndex: 0 });
       } else if (this.props.repo) {
         // We're navigating into this assignment and we are already logged in
-        this.props.getGraders(socketId, this.props.params.assignmentId);
+        this.props.getGraders(socket.id, this.props.match.params.assignmentId);
       }
     }
   }
@@ -62,13 +62,13 @@ class AssignmentPage extends Component {
     if (nextProps.hasChanged) {
       // User just updated the assignment arguments so we should run the script
       this.props.runScript({
-        socketId: socketId,
+        socketId: socket.id,
         assignment: nextProps.assignment
       });
       this.setState({ previewIndex: 0 });
     } else if (!this.props.repo && nextProps.repo) {
       // We just logged into the repository
-      this.props.getGraders(socketId, this.props.params.assignmentId);
+      this.props.getGraders(socket.id, this.props.match.params.assignmentId);
     }
   }
 
@@ -80,7 +80,7 @@ class AssignmentPage extends Component {
     event.preventDefault();
 
     if (event.target.className.indexOf('disabled') === -1) {
-      this.props.getGraders(socketId, this.props.params.assignmentId);
+      this.props.getGraders(socket.id, this.props.match.params.assignmentId);
       this.setState({ previewIndex: 0 });
     }
   };
@@ -114,7 +114,7 @@ class AssignmentPage extends Component {
   };
 
   render() {
-    const { assignmentId, repoId } = this.props.params;
+    const { assignmentId, repoId } = this.props.match.params;
     const { assignment, error, repo, loading, previewList } = this.props;
     const { previewIndex } = this.state;
 
@@ -206,7 +206,7 @@ export default connect(
     assignment: state.assignment.assignment,
     hasChanged: state.assignment.hasChanged,
     previewList: state.assignment.previewList,
-    isLoaded: state.assignment.isLoaded,
+    isLoaded: state.assignment.loaded,
     loading: state.assignment.loading,
     error: state.assignment.error
   }),

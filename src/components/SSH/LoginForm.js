@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { connect as sshConnect, destroy } from 'redux/modules/repo';
-import socketId from 'utils/socket';
+import { socket } from 'utils/socket';
 import './LoginForm.css';
 
 class SSHLoginForm extends Component {
@@ -36,7 +36,7 @@ class SSHLoginForm extends Component {
       this.props.sshConnect({
         username: username.value,
         password: password.value,
-        socketId: socketId
+        socketId: socket.id
       });
       password.value = '';
     }

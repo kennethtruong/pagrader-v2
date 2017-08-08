@@ -12,6 +12,9 @@
     "react",
     "prettier"
   ],
+  "globals": {
+    "socket": true
+  },
   "env": {
     "browser": true,
     "es6": true,
