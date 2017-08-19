@@ -13,7 +13,6 @@ function formatUrl(path) {
 export default class OutputContainer extends Component {
   static propTypes = {
     fileName: PropTypes.string.isRequired,
-    loading: PropTypes.bool,
     language: PropTypes.string,
     error: PropTypes.object,
     viewHeight: PropTypes.string.isRequired,
