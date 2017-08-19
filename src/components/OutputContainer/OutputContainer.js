@@ -4,12 +4,15 @@ import { PrismCode } from 'react-prism';
 import { socket } from 'utils/socket';
 import './OutputContainer.css';
 
+function formatUrl(path) {
+  const adjustedPath = path[0] !== '/' ? '/' + path : path;
+  // Prepend `/api` to relative URL, to proxy to API server.
+  return '/api' + adjustedPath;
+}
+
 export default class OutputContainer extends Component {
   static propTypes = {
     fileName: PropTypes.string.isRequired,
-    load: PropTypes.func.isRequired,
-    output: PropTypes.string,
-    loading: PropTypes.bool,
     language: PropTypes.string,
     error: PropTypes.object,
     viewHeight: PropTypes.string.isRequired,
@@ -17,23 +20,46 @@ export default class OutputContainer extends Component {
     graderId: PropTypes.string.isRequired
   };
 
-  componentDidMount() {
-    const { assignmentId, graderId, fileName } = this.props;
+  constructor(props) {
+    super(props);
 
-    this.props.load(socket.id, assignmentId, graderId, fileName);
+    this.state = {
+      output: null,
+      loading: true
+    };
+  }
+
+  assign(socketid, assignmentId, graderId, fileName) {
+    //sets the state of the assignment to the file output
+
+    fetch(
+      formatUrl(
+        `/ssh/getFile/${socketid}/${assignmentId}/${graderId}/${fileName}`
+      )
+    ).then(res => {
+      if (res.ok) {
+        res.text().then(out => {
+          this.setState({ output: out, loading: false });
+        });
+      }
+    });
+  }
+
+  componentWillMount() {
+    const { assignmentId, graderId, fileName } = this.props;
+    this.assign(socket.id, assignmentId, graderId, fileName);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.fileName !== nextProps.fileName) {
       const { assignmentId, graderId, fileName } = nextProps;
-
-      this.props.load(socket.id, assignmentId, graderId, fileName);
+      this.assign(socket.id, assignmentId, graderId, fileName);
     }
   }
 
   createMarkup = () => {
     // TODO: Fix this where the assignments we display can expose a vulnerability in their output
-    return { __html: this.props.loading ? '' : this.props.output };
+    return { __html: this.props.loading ? '' : this.state.output };
   };
 
   render() {
@@ -57,11 +83,11 @@ export default class OutputContainer extends Component {
                   style={{ height: `${viewHeight}vh` }}
                 >
                   <PrismCode className={`language-${language}`}>
-                    {!loading && this.props.output}
+                    {!loading && this.state.output}
                   </PrismCode>
                 </pre>) ||
                 <pre style={{ height: `${viewHeight}vh` }}>
-                  {!loading && this.props.output}
+                  {!loading && this.state.output}
                 </pre>)) ||
               <pre
                 style={{ height: `${viewHeight}vh` }}
