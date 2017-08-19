@@ -22,3 +22,6 @@ yarn-error.log*
 
 *.sublime-*
 server/config/localSecrets.js
+
+.idea/
+*.iml

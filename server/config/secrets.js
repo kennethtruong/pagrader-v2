@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 if (fs.existsSync(path.resolve(__dirname, 'localSecrets.js'))) {
   const secrets = require('./localSecrets.js');
+  secrets.sshTestInfo = secrets.sshTestUser + ':' + secrets.sshTestPassword;
   secrets.session = 'Your session secret goes here';
   module.exports = secrets;
 } else {
