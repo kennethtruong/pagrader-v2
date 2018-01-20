@@ -25,7 +25,7 @@ module.exports = {
 
   sshServerInfo: (This is the SSH Server that the SSH Accounts are used on. Ask me for info or you can use your tutor account. For development I use shell.xshellz.com),
 
-  sshTestUsername: (This is the SSH Login to run SSH tests)
+  sshTestUser: (This is the SSH Login to run SSH tests)
   sshTestPassword: (This is the SSH Password to run SSH tests)
 };
 ```
