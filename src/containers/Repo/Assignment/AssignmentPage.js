@@ -41,7 +41,10 @@ class AssignmentPage extends Component {
   }
 
   componentWillMount() {
-    if (this.props.hasChanged) {
+    if (!this.props.isLoaded) {
+      const { repoId, assignmentId } = this.props.match.params;
+      this.props.load(repoId, assignmentId);
+    } else if (this.props.hasChanged) {
       // We just created this assignment so we should run the script
       this.props.runScript({
         socketId: socket.id,
@@ -68,6 +71,8 @@ class AssignmentPage extends Component {
         assignment: nextProps.assignment
       });
       this.setState({ previewIndex: 0 });
+    } else if (nextProps.repo && !this.props.repo) {
+      this.props.getGraders(socket.id, this.props.match.params.assignmentId);
     }
   }
 
