@@ -108,7 +108,6 @@ export default function reducer(state = initialState, action = {}) {
       };
     case GET_GRADERS_FAIL:
     case RUN_FAIL:
-      debugger;
       return {
         ...state,
         loading: false,

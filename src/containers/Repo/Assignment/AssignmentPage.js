@@ -41,8 +41,9 @@ class AssignmentPage extends Component {
   }
 
   componentWillMount() {
-    if (this.props.isLoaded) {
-      this.props.load();
+    if (!this.props.isLoaded) {
+      const { repoId, assignmentId } = this.props.match.params;
+      this.props.load(repoId, assignmentId);
     } else {
       if (this.props.hasChanged) {
         // We just created this assignment so we should run the script
@@ -59,7 +60,10 @@ class AssignmentPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.hasChanged) {
+    if (!nextProps.loading && !nextProps.isLoaded) {
+      const { repoId, assignmentId } = this.props.match.params;
+      this.props.load(repoId, assignmentId);
+    } else if (nextProps.hasChanged) {
       // User just updated the assignment arguments so we should run the script
       this.props.runScript({
         socketId: socket.id,
