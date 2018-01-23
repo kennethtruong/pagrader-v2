@@ -1,4 +1,4 @@
-# Autograder
+# PAGrader
 
 This is a web application to help save time grading introductory programming assignments.
 

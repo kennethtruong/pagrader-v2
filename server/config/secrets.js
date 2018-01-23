@@ -7,7 +7,7 @@ if (fs.existsSync(path.resolve(__dirname, 'localSecrets.js'))) {
   module.exports = secrets;
 } else {
   module.exports = {
-    db: process.env.MONGOLAB_URI || 'mongodb://localhost/autograder',
+    db: process.env.MONGOLAB_URI || 'mongodb://localhost/pagrader',
 
     session: process.env.SESSION_SECRET || 'Your session secret goes here',
 

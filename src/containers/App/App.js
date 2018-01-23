@@ -15,13 +15,13 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Helmet title="Autograder" />
+        <Helmet title="PAGrader" />
         {
           // user &&
           <Navbar fixedTop>
             <Header>
               <Brand>
-                <Link to="/">AutoGrader</Link>
+                <Link to="/">PAGrader</Link>
               </Brand>
               <Toggle />
             </Header>
@@ -35,7 +35,7 @@ export default class App extends Component {
         <div className="App-Footer text-center">
           Have questions or see issues? Submit them{' '}
           <a
-            href="https://github.com/k2truong/autograder/issues"
+            href="https://github.com/k2truong/pagrader-v2/issues"
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -1,6 +1,6 @@
 {
-  "short_name": "AutoGrader",
-  "name": "AutoGrader",
+  "short_name": "PAGrader",
+  "name": "PAGrader",
   "icons": [
     {
       "src": "favicon.ico",
