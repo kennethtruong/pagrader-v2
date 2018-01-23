@@ -105,10 +105,6 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export function isLoaded(globalState) {
-  return globalState.grade && globalState.grade.loaded;
-}
-
 export function load(repoId, assignmentId, graderId) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],

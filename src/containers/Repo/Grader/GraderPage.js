@@ -10,7 +10,6 @@ import {
   GraderPreview
 } from 'components';
 import {
-  isLoaded,
   load,
   save,
   submit,
@@ -19,7 +18,6 @@ import {
   complete
 } from 'redux/modules/grade';
 import {
-  isLoaded as isAssignmentLoaded,
   load as loadAssignment,
   destroy as destroyAssignment
 } from 'redux/modules/assignment';
@@ -29,6 +27,8 @@ class GraderPage extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     students: PropTypes.array,
+    loading: PropTypes.bool,
+    isLoaded: PropTypes.bool,
     repo: PropTypes.object,
     save: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired,
@@ -36,6 +36,8 @@ class GraderPage extends Component {
     warnings: PropTypes.string,
     paguide: PropTypes.string,
     update: PropTypes.func.isRequired,
+    load: PropTypes.func.isRequired,
+    loadAssignment: PropTypes.func.isRequired,
     destroy: PropTypes.func.isRequired,
     submitting: PropTypes.bool,
     submitted: PropTypes.bool,
@@ -55,10 +57,27 @@ class GraderPage extends Component {
     };
   }
 
+  componentWillMount() {
+    if (!this.props.isLoaded) {
+      const { repoId, assignmentId, graderId } = this.props.match.params;
+      this.props.load(repoId, assignmentId, graderId);
+      this.props.loadAssignment(repoId, assignmentId);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.submitted && nextProps.submitted) {
       alert('Emails successfully sent!');
       this.props.complete();
+    }
+
+    if (!this.props.isLoaded && nextProps.isLoaded) {
+      this.setState({
+        currentStudent:
+          nextProps.students && nextProps.students.length
+            ? nextProps.students[0]
+            : null
+      });
     }
   }
 
@@ -75,7 +94,7 @@ class GraderPage extends Component {
     event.preventDefault();
 
     const { students } = this.props;
-    const studentIndex = +this.refs.student.value;
+    const studentIndex = event.target.selectedIndex;
 
     this.setState({
       currentStudent: students[studentIndex],
@@ -268,7 +287,7 @@ class GraderPage extends Component {
 
   render() {
     const { assignmentId, repoId } = this.props.match.params;
-    const { error, repo } = this.props;
+    const { isLoaded, error, repo } = this.props;
 
     return (
       <div>
@@ -279,7 +298,10 @@ class GraderPage extends Component {
               Error: {error.message}
             </h1>) ||
             // TODO: Need to add 404 page here if there is no currentStudent
-            (repo && repo.username === repoId && this.renderPage()) ||
+            (isLoaded &&
+              repo &&
+              repo.username === repoId &&
+              this.renderPage()) ||
             <SSHLoginForm repoId={repoId} />}
         </div>
       </div>
@@ -293,8 +315,11 @@ export default connect(
     students: state.grade.students,
     submitting: state.grade.submitting,
     submitted: state.grade.submitted,
-    warnings: state.assignment.assignment.warnings,
-    paguide: state.assignment.assignment.paguide,
+    isLoaded: state.grade.loaded && state.assignment.loaded,
+    loading: state.grade.loading || state.assignment.loading,
+    warnings:
+      state.assignment.assignment && state.assignment.assignment.warnings,
+    paguide: state.assignment.assignment && state.assignment.assignment.paguide,
     error: state.grade.error
   }),
   {
@@ -302,6 +327,8 @@ export default connect(
     submit,
     destroy,
     complete,
+    load,
+    loadAssignment,
     destroyAssignment,
     update
   }

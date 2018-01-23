@@ -41,21 +41,18 @@ class AssignmentPage extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.isLoaded) {
+    if (this.props.hasChanged) {
+      // We just created this assignment so we should run the script
+      this.props.runScript({
+        socketId: socket.id,
+        assignment: this.props.assignment
+      });
+      this.setState({ previewIndex: 0 });
+    } else if (this.props.repo) {
+      // We're navigating into this assignment and we are already logged in
       const { repoId, assignmentId } = this.props.match.params;
       this.props.load(repoId, assignmentId);
-    } else {
-      if (this.props.hasChanged) {
-        // We just created this assignment so we should run the script
-        this.props.runScript({
-          socketId: socket.id,
-          assignment: this.props.assignment
-        });
-        this.setState({ previewIndex: 0 });
-      } else if (this.props.repo) {
-        // We're navigating into this assignment and we are already logged in
-        this.props.getGraders(socket.id, this.props.match.params.assignmentId);
-      }
+      this.props.getGraders(socket.id, assignmentId);
     }
   }
 
@@ -63,6 +60,7 @@ class AssignmentPage extends Component {
     if (!nextProps.loading && !nextProps.isLoaded) {
       const { repoId, assignmentId } = this.props.match.params;
       this.props.load(repoId, assignmentId);
+      this.props.getGraders(socket.id, this.props.match.params.assignmentId);
     } else if (nextProps.hasChanged) {
       // User just updated the assignment arguments so we should run the script
       this.props.runScript({
@@ -70,9 +68,6 @@ class AssignmentPage extends Component {
         assignment: nextProps.assignment
       });
       this.setState({ previewIndex: 0 });
-    } else if (!this.props.repo && nextProps.repo) {
-      // We just logged into the repository
-      this.props.getGraders(socket.id, this.props.match.params.assignmentId);
     }
   }
 
